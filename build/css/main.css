@@ -1,0 +1,83 @@
+:root {
+  --bg-main-color: #00000080;
+  --bg-accent-color: #2d2d2d;
+  --accent-color: #f64435;
+  --text-accent-color: #ffe498;
+  --text-edit-bg-color: #575757;
+  --border-color: #3f3f3f;
+  --shadow-color: #202020;
+  --document-bg-color: #68686850;
+  --component-bg-gradient: radial-gradient(
+    circle,
+    #646464e6 0%,
+    #363636e6 100%
+  );
+  --smokywhite: #dddbd8;
+  --black: #000000;
+  --translucent-black: #00000099;
+
+  --default-opacity: 0.9;
+  --doc-width: 40rem;
+  --doc-height: 47.5rem;
+}
+
+header,
+footer {
+  background-color: var(--black);
+  width: var(--doc-width);
+  margin: auto;
+  box-sizing: border-box;
+  opacity: var(--default-opacity);
+}
+
+header {
+  height: 8rem;
+}
+
+footer {
+  height: 4rem;
+  line-height: 4rem;
+  font-size: 1rem;
+  color: var(--smokywhite);
+  text-align: center;
+}
+
+.document {
+  width: var(--doc-width);
+  height: var(--doc-height);
+  margin: auto;
+  background-color: var(--document-bg-color);
+  opacity: var(--default-opacity);
+}
+
+.header--title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--accent-color);
+  padding: 1rem;
+  margin: 0;
+  opacity: 1;
+}
+
+.header--btns {
+  text-align: center;
+  padding-bottom: 1rem;
+  opacity: 1;
+}
+
+.btn {
+  border-radius: 4px;
+  outline: 0;
+}
+
+.btn--add {
+  color: var(--smokywhite);
+  font-weight: bold;
+  font-size: 0.75rem;
+  background-color: var(--accent-color);
+  border: 1px solid black;
+  width: 7.5rem;
+  height: 2rem;
+  opacity: 1;
+}
