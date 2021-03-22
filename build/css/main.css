@@ -18,7 +18,7 @@
 
   --default-opacity: 0.9;
   --doc-width: 40rem;
-  --doc-height: 47.5rem;
+  --doc-height: 48rem;
 }
 
 header,
@@ -28,6 +28,11 @@ footer {
   margin: auto;
   box-sizing: border-box;
   opacity: var(--default-opacity);
+}
+
+body {
+  background: center/cover no-repeat url(../../src/background-img.png);
+  overflow: hidden;
 }
 
 header {
@@ -40,14 +45,6 @@ footer {
   font-size: 1rem;
   color: var(--smokywhite);
   text-align: center;
-}
-
-.document {
-  width: var(--doc-width);
-  height: var(--doc-height);
-  margin: auto;
-  background-color: var(--document-bg-color);
-  opacity: var(--default-opacity);
 }
 
 .header--title {
@@ -80,4 +77,78 @@ footer {
   width: 7.5rem;
   height: 2rem;
   opacity: 1;
+}
+
+.components {
+  width: var(--doc-width);
+  height: var(--doc-height);
+  box-sizing: border-box;
+  padding: 0.25rem;
+  margin: auto;
+  background-color: var(--document-bg-color);
+  opacity: var(--default-opacity);
+  overflow: hidden scroll;
+}
+
+.components::-webkit-scrollbar {
+  width: 3px;
+}
+.components::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.components::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: var(--accent-color);
+}
+.components::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+
+.component {
+  display: flex;
+  background: var(--component-bg-gradient);
+  width: 37rem;
+  margin: 1.25rem;
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+  box-shadow: 2px 2px var(--shadow-color);
+}
+
+.paragraph {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+}
+
+.paragraph-text {
+  width: 13rem;
+}
+
+.media {
+  height: 12rem;
+}
+
+.component--text {
+  min-height: 8rem;
+}
+
+.text--wrapper {
+}
+
+.text--title {
+  margin-top: 0;
+  color: var(--text-accent-color);
+}
+
+.text--list {
+  word-break: break-all;
+}
+
+.btn--close {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  color: var(--accent-color);
 }

@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Motion</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+      integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./build/css/main.css" />
     <script src="./build/js/main.js" defer></script>
   </head>
@@ -18,7 +24,66 @@
         <button class="btn--add btn">TASK</button>
       </div>
     </header>
-    <div class="document"></div>
+    <div class="components">
+      <!-- Img -->
+      <div class="component component--media">
+        <div class="media">
+          <img src="https://picsum.photos/341/192" alt="img" />
+        </div>
+        <div class="paragraph">
+          <div class="text--wrapper">
+            <p class="text--title">Dream Coding</p>
+          </div>
+          <div class="btn--close">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Video -->
+      <div class="component component--media">
+        <div class="media">
+          <img src="https://picsum.photos/341/192" alt="video thumbnail" />
+        </div>
+        <div class="paragraph">
+          <div class="component--text">
+            <p class="text--title">Dream Coding</p>
+          </div>
+          <div class="btn--close">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Note -->
+      <div class="component component--text">
+        <div class="paragraph">
+          <div class="text--wrapper">
+            <p class="text--title">MEMO</p>
+            <p class="text--list">
+              test test test test test test test test test test test test test
+              test testvtest test test test test
+            </p>
+            <p class="text--list">test test test test test</p>
+            <p class="text--list">test test test test test</p>
+          </div>
+          <div class="btn--close">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Task -->
+      <div class="component component--text">
+        <div class="paragraph">
+          <div class="text--wrapper">
+            <p class="text--title">TODO</p>
+            <input type="checkbox" name="checkbox" />
+            <label for="checkbox">test</label>
+          </div>
+          <div class="btn--close">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>© Copyright by ClarXo All rights reserved</footer>
   </body>
 </html>
