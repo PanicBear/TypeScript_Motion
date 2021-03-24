@@ -7,33 +7,32 @@ type Modal = {
   value: string;
 };
 
-let headerBtnWrapper = document.querySelector(".header--btns");
-let clickedBtnType: ElementType | null;
+window.addEventListener("DOMContentLoaded", () => {
+  let headerBtnWrapper = document.querySelector(".header--btns");
+  let clickedBtnType: ElementType | null;
 
-const modal: Modal = { title: "", content: "URL", value: "" };
+  const modal: Modal = { title: "", content: "URL", value: "" };
 
-headerBtnWrapper?.addEventListener("click", (e: Event) => {
-  let element = e.target as Element;
-  clickedBtnType = element.textContent as ElementType;
+  headerBtnWrapper?.addEventListener("click", (e: Event) => {
+    let element = e.target as Element;
+    clickedBtnType = element.textContent as ElementType;
 
-  addElement(clickedBtnType, modal);
+    btnClicked(clickedBtnType, modal);
+  });
 });
 
-function addElement(clickedBtnType: ElementType, modal: Modal): void {
-  console.log(modal);
+function btnClicked(clickedBtnType: ElementType, modal: Modal): void {
+  console.log(clickedBtnType);
+  let newModal: Modal;
   switch (clickedBtnType) {
     case "IMAGE":
-      setModal(modal, { content: "URL" });
-      break;
+      newModal = setModal(modal, { content: "URL" });
     case "VIDEO":
-      setModal(modal, { content: "URL" });
-      break;
+      newModal = setModal(modal, { content: "URL" });
     case "NOTE":
-      setModal(modal, { content: "Body" });
-      break;
+      newModal = setModal(modal, { content: "Body" });
     case "TASK":
-      setModal(modal, { content: "Body" });
-      break;
+      newModal = setModal(modal, { content: "Body" });
     default:
       new Error("Multiple Elements were selected");
   }
@@ -42,3 +41,5 @@ function addElement(clickedBtnType: ElementType, modal: Modal): void {
 function setModal<M>(modal: M, fieldsToUpdate: Partial<M>): M {
   return { ...modal, ...fieldsToUpdate };
 }
+
+function showModal<>

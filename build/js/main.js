@@ -10,29 +10,28 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var headerBtnWrapper = document.querySelector(".header--btns");
-var clickedBtnType;
-var modal = { title: "", content: "URL", value: "" };
-headerBtnWrapper === null || headerBtnWrapper === void 0 ? void 0 : headerBtnWrapper.addEventListener("click", function (e) {
-    var element = e.target;
-    clickedBtnType = element.textContent;
-    addElement(clickedBtnType, modal);
+window.addEventListener("DOMContentLoaded", function () {
+    var headerBtnWrapper = document.querySelector(".header--btns");
+    var clickedBtnType;
+    var modal = { title: "", content: "URL", value: "" };
+    headerBtnWrapper === null || headerBtnWrapper === void 0 ? void 0 : headerBtnWrapper.addEventListener("click", function (e) {
+        var element = e.target;
+        clickedBtnType = element.textContent;
+        btnClicked(clickedBtnType, modal);
+    });
 });
-function addElement(clickedBtnType, modal) {
-    console.log(modal);
+function btnClicked(clickedBtnType, modal) {
+    console.log(clickedBtnType);
+    var newModal;
     switch (clickedBtnType) {
         case "IMAGE":
-            setModal(modal, { content: "URL" });
-            break;
+            newModal = setModal(modal, { content: "URL" });
         case "VIDEO":
-            setModal(modal, { content: "URL" });
-            break;
+            newModal = setModal(modal, { content: "URL" });
         case "NOTE":
-            setModal(modal, { content: "Body" });
-            break;
+            newModal = setModal(modal, { content: "Body" });
         case "TASK":
-            setModal(modal, { content: "Body" });
-            break;
+            newModal = setModal(modal, { content: "Body" });
         default:
             new Error("Multiple Elements were selected");
     }
