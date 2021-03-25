@@ -8,38 +8,83 @@ type Modal = {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  let headerBtnWrapper = document.querySelector(".header--btns");
-  let clickedBtnType: ElementType | null;
+  const MODAL: Modal = { title: "", content: "URL", value: "" };
 
-  const modal: Modal = { title: "", content: "URL", value: "" };
+  let headerBtnWrapper: Element | null = document.querySelector(
+    ".header--btns"
+  );
+  let closeBtnWrapper: Element | null = document.querySelector(".btn--close");
+  let clickedBtnType: ElementType | null;
+  let modalWindow: Element | null = document.querySelector(".modal--bg");
+  let addBtn: Element | null = (modalWindow as Element).querySelector(
+    ".btn--add"
+  );
 
   headerBtnWrapper?.addEventListener("click", (e: Event) => {
     let element = e.target as Element;
     clickedBtnType = element.textContent as ElementType;
 
-    btnClicked(clickedBtnType, modal);
+    headerBtnClicked(clickedBtnType, modalWindow as Element, MODAL);
+  });
+
+  closeBtnWrapper?.addEventListener("click", (e: Event) =>
+    switchModal(modalWindow as Element)
+  );
+
+  (addBtn as Element).addEventListener("click", () => {
+    console.log("add Elements");
+    hideModal(modalWindow as Element);
   });
 });
 
-function btnClicked(clickedBtnType: ElementType, modal: Modal): void {
+function headerBtnClicked(
+  clickedBtnType: ElementType,
+  modalWindow: Element,
+  modal: Modal
+): void {
+  let newModal: Modal = modal;
+  let modalValueLabel: Element | null = document.querySelector(
+    ".window--value__label"
+  );
   console.log(clickedBtnType);
-  let newModal: Modal;
   switch (clickedBtnType) {
     case "IMAGE":
-      newModal = setModal(modal, { content: "URL" });
     case "VIDEO":
-      newModal = setModal(modal, { content: "URL" });
+      newModal = setModalData(modal, { content: "URL" });
+      break;
     case "NOTE":
-      newModal = setModal(modal, { content: "Body" });
     case "TASK":
-      newModal = setModal(modal, { content: "Body" });
+      newModal = setModalData(modal, { content: "Body" });
+      break;
     default:
       new Error("Multiple Elements were selected");
   }
+  mapModalData(newModal, modalValueLabel as Element);
+  switchModal(modalWindow as Element);
 }
 
-function setModal<M>(modal: M, fieldsToUpdate: Partial<M>): M {
+function setModalData<M>(modal: M, fieldsToUpdate: Partial<M>): M {
   return { ...modal, ...fieldsToUpdate };
 }
 
-function showModal<>
+function mapModalData(data: Modal, modalValueLabel: Element): void {
+  modalValueLabel.textContent = data["content"];
+}
+
+function switchModal(modalWindow: Element) {
+  modalWindow.classList.contains("modal-hide")
+    ? showModal(modalWindow)
+    : hideModal(modalWindow);
+}
+
+function showModal(modalWindow: Element) {
+  console.log("showModal");
+  modalWindow.classList.remove("modal-hide");
+  modalWindow.classList.add("modal-show");
+}
+
+function hideModal(modalWindow: Element) {
+  console.log("hideModal");
+  modalWindow.classList.remove("modal-show");
+  modalWindow.classList.add("modal-hide");
+}
