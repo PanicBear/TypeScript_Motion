@@ -80,8 +80,17 @@ footer {
   opacity: 1;
 }
 
+.modal-show {
+  display: block;
+}
+
+.modal-hide {
+  display: none;
+}
+
 .modal--bg {
   position: absolute;
+  background: rgba(0, 0, 0, 0.7);
   left: 0px;
   top: 0px;
   width: 100%;
@@ -90,8 +99,8 @@ footer {
 }
 
 .modal--window {
-  background-color: var(--text-edit-bg-color);
-  opacity: 1 !important;
+  background: var(--document-bg-color);
+  background: var(--component-bg-gradient);
   width: calc(var(--doc-width) * 3 / 4);
   height: min-content;
   box-sizing: border-box;
@@ -112,6 +121,11 @@ footer {
   width: 100%;
   margin-bottom: 1rem;
   box-sizing: border-box;
+}
+
+.modal--window input:focus,
+.modal--window textarea:focus {
+  outline: none;
 }
 
 .modal--window textarea {
@@ -139,16 +153,20 @@ footer {
   overflow: hidden scroll;
 }
 
+textarea::-webkit-scrollbar,
 .components::-webkit-scrollbar {
   width: 3px;
 }
+textarea::-webkit-scrollbar-track,
 .components::-webkit-scrollbar-track {
   background-color: transparent;
 }
+textarea::-webkit-scrollbar-thumb,
 .components::-webkit-scrollbar-thumb {
   border-radius: 3px;
   background-color: var(--accent-color);
 }
+textarea::-webkit-scrollbar-button,
 .components::-webkit-scrollbar-button {
   width: 0;
   height: 0;
