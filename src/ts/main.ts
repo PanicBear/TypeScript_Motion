@@ -7,33 +7,51 @@ type Modal = {
   value: string;
 };
 
+// later
+// class Component {
+//   constructor(private )
+// }
+
 window.addEventListener("DOMContentLoaded", () => {
   const MODAL: Modal = { title: "", content: "URL", value: "" };
-
-  let headerBtnWrapper: Element | null = document.querySelector(
+  const HEADER_BTN_WRAPPER: Element | null = document.querySelector(
     ".header--btns"
   );
-  let closeBtnWrapper: Element | null = document.querySelector(".btn--close");
-  let clickedBtnType: ElementType | null;
-  let modalWindow: Element | null = document.querySelector(".modal--bg");
-  let addBtn: Element | null = (modalWindow as Element).querySelector(
+  const MODAL_WINDOW: Element | null = document.querySelector(".modal--bg");
+  const CLOSE_BTN_WRAPPER: Element | null = document.querySelector(
+    ".btn--close"
+  );
+  const ADD_BTN: Element | null = (MODAL_WINDOW as Element).querySelector(
     ".btn--add"
   );
+  const COMPONENT_WRAPPER: Element | null = document.querySelector(
+    ".components"
+  );
 
-  headerBtnWrapper?.addEventListener("click", (e: Event) => {
+  let clickedBtnType: ElementType | null;
+
+  HEADER_BTN_WRAPPER?.addEventListener("click", (e: Event) => {
     let element = e.target as Element;
     clickedBtnType = element.textContent as ElementType;
 
-    headerBtnClicked(clickedBtnType, modalWindow as Element, MODAL);
+    headerBtnClicked(clickedBtnType, MODAL_WINDOW as Element, MODAL);
   });
 
-  closeBtnWrapper?.addEventListener("click", (e: Event) =>
-    switchModal(modalWindow as Element)
+  CLOSE_BTN_WRAPPER?.addEventListener("click", (e: Event) =>
+    switchModal(MODAL_WINDOW as Element)
   );
 
-  (addBtn as Element).addEventListener("click", () => {
+  (ADD_BTN as Element).addEventListener("click", () => {
     console.log("add Elements");
-    hideModal(modalWindow as Element);
+    addComponent(COMPONENT_WRAPPER as Element, MODAL, COMPONENT); // TODO
+    hideModal(MODAL_WINDOW as Element);
+  });
+
+  window.addEventListener("click", (e: Event) => {
+    let target = e.target as Element;
+    if (target.classList.contains("modal-show")) {
+      hideModal(MODAL_WINDOW as Element);
+    }
   });
 });
 
@@ -88,3 +106,5 @@ function hideModal(modalWindow: Element) {
   modalWindow.classList.remove("modal-show");
   modalWindow.classList.add("modal-hide");
 }
+
+function addComponent(targetElement: Element, modalData: Modal) {}
