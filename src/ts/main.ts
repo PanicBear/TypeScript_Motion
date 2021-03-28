@@ -7,9 +7,8 @@ type Modal = {
   value: string;
 };
 
-// later
 // class Component {
-//   constructor(private )
+//   constructor(private:title);
 // }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -43,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   (ADD_BTN as Element).addEventListener("click", () => {
     console.log("add Elements");
-    addComponent(COMPONENT_WRAPPER as Element, MODAL, COMPONENT); // TODO
+    // addComponent(COMPONENT_WRAPPER as Element, MODAL, COMPONENT); // TODO
     hideModal(MODAL_WINDOW as Element);
   });
 
@@ -107,4 +106,4 @@ function hideModal(modalWindow: Element) {
   modalWindow.classList.add("modal-hide");
 }
 
-function addComponent(targetElement: Element, modalData: Modal) {}
+// function addComponent(targetElement: Element, modalData: Modal, component) {}

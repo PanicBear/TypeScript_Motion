@@ -10,9 +10,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-// later
 // class Component {
-//   constructor(private )
+//   constructor(private:title);
 // }
 window.addEventListener("DOMContentLoaded", function () {
     var MODAL = { title: "", content: "URL", value: "" };
@@ -32,7 +31,7 @@ window.addEventListener("DOMContentLoaded", function () {
     });
     ADD_BTN.addEventListener("click", function () {
         console.log("add Elements");
-        addComponent(COMPONENT_WRAPPER, MODAL, COMPONENT); // TODO
+        // addComponent(COMPONENT_WRAPPER as Element, MODAL, COMPONENT); // TODO
         hideModal(MODAL_WINDOW);
     });
     window.addEventListener("click", function (e) {
@@ -82,5 +81,5 @@ function hideModal(modalWindow) {
     modalWindow.classList.remove("modal-show");
     modalWindow.classList.add("modal-hide");
 }
-function addComponent(targetElement, modalData) { }
+// function addComponent(targetElement: Element, modalData: Modal, component) {}
 //# sourceMappingURL=main.js.map
