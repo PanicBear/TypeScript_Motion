@@ -30,68 +30,83 @@ var Component = /** @class */ (function () {
     return Component;
 }());
 var Modal = /** @class */ (function () {
-    function Modal(MODAL_WINDOW) {
-        this.MODAL_WINDOW = MODAL_WINDOW;
+    function Modal(MODAL_BG) {
+        this.MODAL_BG = MODAL_BG;
         this.state = {
             switch: "HIDE",
             titleInput: "",
             valueTitle: "URL",
             valueInput: "",
         };
+        this.valueLabel = this.MODAL_BG.querySelector(".window--value__label");
+        this.titleInput = this.MODAL_BG.querySelector(".window--title__input");
+        this.valueInput = this.MODAL_BG.querySelector(".window--value__textarea");
+        this.initBtnEvent();
     }
+    Modal.prototype.initBtnEvent = function () {
+        var _this = this;
+        this.MODAL_BG.addEventListener("click", function (e) {
+            var target = e.target;
+            var filters = ["modal--bg", "btn--close", "fa-times"];
+            var isCancled = filters.some(function (filter) {
+                return target.classList.contains(filter);
+            });
+            if (isCancled) {
+                _this.hideModal();
+            }
+            else if (target.classList.contains("btn--add")) {
+                _this.addComponent();
+                _this.hideModal();
+            }
+        });
+    };
+    Modal.prototype.setState = function (param) {
+        this.state = __assign(__assign({}, this.state), param);
+    };
     Modal.prototype.resetModal = function () {
         // switch는 show & hide 있고
         // valueTitle은 띄울 때 초기화되기에 상관없음
-        var resetParam = {
+        this.setState({
             titleInput: "",
             valueInput: "",
-        };
-        this.state = __assign(__assign({}, this.state), resetParam);
+        });
+        this.valueLabel.textContent = this.state.valueTitle;
+        this.titleInput.value = this.state.titleInput;
+        this.valueInput.value = this.state.valueInput;
     };
-    Modal.prototype.setModalState = function (modifyParam) {
-        this.state = __assign(__assign({}, this.state), modifyParam);
+    Modal.prototype.addComponent = function () {
+        console.log("add Component");
     };
     Modal.prototype.showModal = function (valueTitle) {
         this.resetModal();
-        this.setModalState({ switch: "SHOW", valueTitle: valueTitle });
-        var valueLabel = this.MODAL_WINDOW.querySelector(".window--value__label");
-        var titleInput = this.MODAL_WINDOW.querySelector(".window--title__input");
-        var valueInput = this.MODAL_WINDOW.querySelector(".window--value__textarea");
-        this.MODAL_WINDOW.classList.remove("modal-hide");
-        this.MODAL_WINDOW.classList.add("modal-show");
-        valueLabel.textContent = this.state.valueTitle;
-        titleInput.value = this.state.titleInput;
-        valueInput.value = this.state.valueInput;
+        this.setState({ switch: "SHOW", valueTitle: valueTitle });
+        this.MODAL_BG.classList.remove("modal-hide");
+        this.MODAL_BG.classList.add("modal-show");
     };
     Modal.prototype.hideModal = function () {
-        this.MODAL_WINDOW.classList.add("modal-hide");
-        this.MODAL_WINDOW.classList.remove("modal-show");
-        var modalInputTitle = this.MODAL_WINDOW.querySelector(".window--title__input");
-        var modalInputValue = this.MODAL_WINDOW.querySelector(".window--value__input");
-        modalInputTitle.value = "";
-        modalInputValue.value = "";
+        this.MODAL_BG.classList.add("modal-hide");
+        this.MODAL_BG.classList.remove("modal-show");
     };
     return Modal;
 }());
 document.addEventListener("DOMContentLoaded", function () {
     var HEADER_BTN_WRAPPER = document.querySelector(".header--btns");
-    var MODAL_WINDOW = document.querySelector(".modal--bg");
-    var MODAL_CLOSE_BTN = document.querySelector(".btn--close");
+    var MODAL_BG = document.querySelector(".modal--bg");
+    // const MODAL_BTN_ADD: Element | null = document.querySelector(".btn--add");
+    // const MODAL_BTN_CLOSE: Element | null = document.querySelector(".btn--close");
+    var modal = new Modal(MODAL_BG);
     HEADER_BTN_WRAPPER === null || HEADER_BTN_WRAPPER === void 0 ? void 0 : HEADER_BTN_WRAPPER.addEventListener("click", function (e) {
         var element = e.target;
-        var component;
-        var modal = new Modal(MODAL_WINDOW);
         if (element.classList.contains("btn--add")) {
             console.log(element.textContent);
             switch (element.textContent) {
                 case "IMAGE":
                 case "VIDEO":
-                    console.log(modal.showModal((component = new Component({ title: "title", url: "URL" })), MODAL_WINDOW));
+                    modal.showModal("URL");
                     break;
                 case "NOTE":
                 case "TASK":
-                    console.log(showModal((component = new Component({ title: "title", body: "BODY" })), MODAL_WINDOW));
-                    showModal((component = new Component({ title: "title", body: "BODY" })), MODAL_WINDOW);
+                    modal.showModal("Body");
                     break;
                 default:
                     throw new Error("unexpected click event");
