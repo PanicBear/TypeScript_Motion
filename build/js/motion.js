@@ -23,18 +23,29 @@ var Component = /** @class */ (function () {
         this.state = __assign(__assign({}, this.state), param);
     };
     Component.prototype.addComponent = function (input) {
+        var _this = this;
+        var _a;
+        var newComponent = document.createElement("div");
+        newComponent.classList.add("component");
         this.setState(input);
-        this.section.innerHTML += this.parseValue(input); // << URL 파싱
+        this.section.appendChild(this.parseValue(input, newComponent));
+        (_a = newComponent.querySelector(".btn--close")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+            if (confirm("해당 요소를 삭제하시겠습니까?")) {
+                _this.section.removeChild(newComponent);
+            }
+        });
     };
-    Component.prototype.parseValue = function (param) {
+    Component.prototype.parseValue = function (param, componentWrapper) {
         var html = "";
         var title = param.titleInput;
         var value = param.valueInput;
         switch (this.state.componentType) {
             case "IMAGE":
-                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n          <img src=\"" + value + "\" alt=\"img\" />\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                componentWrapper.classList.add("component--media");
+                html = "<div class=\"media\">\n          <img src=\"" + value + "\" alt=\"img\" />\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>";
                 break;
             case "VIDEO":
+                componentWrapper.classList.add("component--media");
                 var videoId = "";
                 var regex1 = /(?:https?\/\/)?(?:www\.)?youtu.be\/([a-zA-z0-9-]{11})/;
                 var regex2 = /(?:https?\/\/)?(?:www\.)?youtube.com\/watch\?v=([a-zA-z0-9-]{11})/;
@@ -50,18 +61,21 @@ var Component = /** @class */ (function () {
                     throw new Error("not a youtube url");
                 }
                 console.log(videoId);
-                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n        <iframe id=\"ytplayer\" type=\"text/html\"\n        src=\"https://www.youtube.com/embed/" + videoId + "?autoplay=0&origin=http://example.com\"\n        frameborder=\"0\"></iframe>\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                html = "<div class=\"media\">\n        <iframe id=\"ytplayer\" type=\"text/html\"\n        src=\"https://www.youtube.com/embed/" + videoId + "?autoplay=0&origin=http://example.com\"\n        frameborder=\"0\"></iframe>\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>";
                 break;
             case "NOTE":
-                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <p class=\"text--list\">" + value + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                componentWrapper.classList.add("component--text");
+                html = "<div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <p class=\"text--list\">" + value + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>";
                 break;
             case "TASK":
-                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <input type=\"checkbox\" name=\"checkbox\" />\n            <label class=\"text--list\" for=\"checkbox\">" + value + "</label>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                componentWrapper.classList.add("component--text");
+                html = "<div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <input type=\"checkbox\" name=\"checkbox\" />\n            <label class=\"text--list\" for=\"checkbox\">" + value + "</label>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>";
                 break;
             default:
                 throw new Error("unable to parse Value");
         }
-        return html;
+        componentWrapper.innerHTML = html;
+        return componentWrapper;
     };
     return Component;
 }());

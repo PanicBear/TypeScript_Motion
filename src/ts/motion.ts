@@ -21,17 +21,27 @@ class Component {
   }
 
   addComponent(input: Omit<MODAL_STATE, "valueTitle">) {
+    let newComponent = document.createElement("div");
+    newComponent.classList.add("component");
     this.setState(input);
-    this.section.innerHTML += this.parseValue(input); // << URL 파싱
+    this.section.appendChild(this.parseValue(input, newComponent));
+    newComponent.querySelector(".btn--close")?.addEventListener("click", () => {
+      if (confirm("해당 요소를 삭제하시겠습니까?")) {
+        this.section.removeChild(newComponent);
+      }
+    });
   }
-  parseValue(param: Pick<MODAL_STATE, "titleInput" | "valueInput">): string {
+  parseValue(
+    param: Pick<MODAL_STATE, "titleInput" | "valueInput">,
+    componentWrapper: Element
+  ): Element {
     let html = "";
     let title = param.titleInput;
     let value = param.valueInput;
     switch (this.state.componentType) {
       case "IMAGE":
-        html = `<div class="component component--media">
-        <div class="media">
+        componentWrapper.classList.add("component--media");
+        html = `<div class="media">
           <img src="${value}" alt="img" />
         </div>
         <div class="paragraph">
@@ -41,10 +51,10 @@ class Component {
           <div class="btn--close">
             <i class="fas fa-times"></i>
           </div>
-        </div>
-      </div>`;
+        </div>`;
         break;
       case "VIDEO":
+        componentWrapper.classList.add("component--media");
         let videoId = "";
         let regex1 = /(?:https?\/\/)?(?:www\.)?youtu.be\/([a-zA-z0-9-]{11})/;
         let regex2 = /(?:https?\/\/)?(?:www\.)?youtube.com\/watch\?v=([a-zA-z0-9-]{11})/;
@@ -64,8 +74,7 @@ class Component {
         }
 
         console.log(videoId);
-        html = `<div class="component component--media">
-        <div class="media">
+        html = `<div class="media">
         <iframe id="ytplayer" type="text/html"
         src="https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com"
         frameborder="0"></iframe>
@@ -77,12 +86,11 @@ class Component {
           <div class="btn--close">
             <i class="fas fa-times"></i>
           </div>
-        </div>
-      </div>`;
+        </div>`;
         break;
       case "NOTE":
-        html = `<div class="component component--text">
-        <div class="paragraph">
+        componentWrapper.classList.add("component--text");
+        html = `<div class="paragraph">
           <div class="text--wrapper">
             <p class="text--title title">${title}</p>
             <p class="text--list">${value}</p>
@@ -90,12 +98,11 @@ class Component {
           <div class="btn--close">
             <i class="fas fa-times"></i>
           </div>
-        </div>
-      </div>`;
+        </div>`;
         break;
       case "TASK":
-        html = `<div class="component component--text">
-        <div class="paragraph">
+        componentWrapper.classList.add("component--text");
+        html = `<div class="paragraph">
           <div class="text--wrapper">
             <p class="text--title title">${title}</p>
             <input type="checkbox" name="checkbox" />
@@ -104,13 +111,13 @@ class Component {
           <div class="btn--close">
             <i class="fas fa-times"></i>
           </div>
-        </div>
-      </div>`;
+        </div>`;
         break;
       default:
         throw new Error("unable to parse Value");
     }
-    return html;
+    componentWrapper.innerHTML = html;
+    return componentWrapper;
   }
 }
 
