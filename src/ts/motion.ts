@@ -1,12 +1,3 @@
-// type COMPONENT_DATA = {
-//   readonly title: string;
-//   readonly url?: string;
-//   readonly body?: string;
-// };
-
-// type MEDIA_COMPONENT = Pick<COMPONENT_DATA, "title" | "url">;
-// type TEXT_COMPONENT = Pick<COMPONENT_DATA, "title" | "body">;
-
 type MODAL_VALUE = "URL" | "Body";
 type MODAL_STATE = {
   componentType: COMPONENT_TYPE;
@@ -15,22 +6,6 @@ type MODAL_STATE = {
   valueInput: string;
 };
 type COMPONENT_TYPE = "IMAGE" | "VIDEO" | "NOTE" | "TASK";
-
-// class Component<D> {
-//   constructor(private data: D) {}
-
-//   getData(): D {
-//     if ("body" in this.data) {
-//       console.log("MEDIA");
-//       return this.data as D;
-//     } else if ("url" in this.data) {
-//       console.log("TEXT");
-//       return this.data as D;
-//     } else {
-//       throw new Error("undefined component");
-//     }
-//   }
-// }
 
 class Component {
   private state: Omit<MODAL_STATE, "valueTitle"> = {
@@ -48,33 +23,20 @@ class Component {
   addComponent(input: Omit<MODAL_STATE, "valueTitle">) {
     this.setState(input);
     this.section.innerHTML += this.parseValue(input); // << URL 파싱
-
-    //   this.section.innerHTML += `
-    //   <div class="component component--text">
-    //     <div class="text">
-    //       <div class="text--wrapper">
-    //         <p class="text--title title">${input.titleInput}</p>
-    //         <input type="checkbox" name="checkbox" />
-    //         <label class="text--list" for="checkbox">${input.valueInput}</label>
-    //       </div>
-    //       <div class="btn--close">
-    //         <i class="fas fa-times"></i>
-    //       </div>
-    //     </div>
-    //   </div>
-    // `;
   }
-  parseValue(input: Pick<MODAL_STATE, "valueInput">): string {
+  parseValue(param: Pick<MODAL_STATE, "titleInput" | "valueInput">): string {
     let html = "";
+    let title = param.titleInput;
+    let value = param.valueInput;
     switch (this.state.componentType) {
       case "IMAGE":
         html = `<div class="component component--media">
         <div class="media">
-          <img src="${this.state.valueInput}" alt="img" />
+          <img src="${value}" alt="img" />
         </div>
         <div class="paragraph">
           <div class="text--wrapper">
-            <p class="text--title title">Dream Coding</p>
+            <p class="text--title title">${title}</p>
           </div>
           <div class="btn--close">
             <i class="fas fa-times"></i>
@@ -83,13 +45,34 @@ class Component {
       </div>`;
         break;
       case "VIDEO":
+        let videoId = "";
+        let regex1 = /(?:https?\/\/)?(?:www\.)?youtu.be\/([a-zA-z0-9-]{11})/;
+        let regex2 = /(?:https?\/\/)?(?:www\.)?youtube.com\/watch\?v=([a-zA-z0-9-]{11})/;
+
+        if (value.match(regex1)) {
+          let result: RegExpMatchArray = value.match(
+            regex1
+          ) as RegExpMatchArray;
+          videoId = result[1];
+        } else if (value.match(regex2)) {
+          let result: RegExpMatchArray = value.match(
+            regex2
+          ) as RegExpMatchArray;
+          videoId = result[1];
+        } else {
+          throw new Error("not a youtube url");
+        }
+
+        console.log(videoId);
         html = `<div class="component component--media">
         <div class="media">
-          <iframe src="${this.state.valueInput}" alt="video thumbnail" />
+        <iframe id="ytplayer" type="text/html"
+        src="https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com"
+        frameborder="0"></iframe>
         </div>
         <div class="paragraph">
           <div class="text--wrapper">
-            <p class="text--title title">Dream Coding</p>
+            <p class="text--title title">${title}</p>
           </div>
           <div class="btn--close">
             <i class="fas fa-times"></i>
@@ -101,8 +84,8 @@ class Component {
         html = `<div class="component component--text">
         <div class="paragraph">
           <div class="text--wrapper">
-            <p class="text--title title">${this.state.titleInput}</p>
-            <p class="text--list">${this.state.valueInput}</p>
+            <p class="text--title title">${title}</p>
+            <p class="text--list">${value}</p>
           </div>
           <div class="btn--close">
             <i class="fas fa-times"></i>
@@ -114,9 +97,9 @@ class Component {
         html = `<div class="component component--text">
         <div class="paragraph">
           <div class="text--wrapper">
-            <p class="text--title title">${this.state.titleInput}</p>
+            <p class="text--title title">${title}</p>
             <input type="checkbox" name="checkbox" />
-            <label class="text--list" for="checkbox">${this.state.valueInput}</label>
+            <label class="text--list" for="checkbox">${value}</label>
           </div>
           <div class="btn--close">
             <i class="fas fa-times"></i>

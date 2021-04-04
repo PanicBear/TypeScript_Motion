@@ -1,9 +1,4 @@
 "use strict";
-// type COMPONENT_DATA = {
-//   readonly title: string;
-//   readonly url?: string;
-//   readonly body?: string;
-// };
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -15,20 +10,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-// class Component<D> {
-//   constructor(private data: D) {}
-//   getData(): D {
-//     if ("body" in this.data) {
-//       console.log("MEDIA");
-//       return this.data as D;
-//     } else if ("url" in this.data) {
-//       console.log("TEXT");
-//       return this.data as D;
-//     } else {
-//       throw new Error("undefined component");
-//     }
-//   }
-// }
 var Component = /** @class */ (function () {
     function Component(section) {
         this.section = section;
@@ -44,35 +25,38 @@ var Component = /** @class */ (function () {
     Component.prototype.addComponent = function (input) {
         this.setState(input);
         this.section.innerHTML += this.parseValue(input); // << URL 파싱
-        //   this.section.innerHTML += `
-        //   <div class="component component--text">
-        //     <div class="text">
-        //       <div class="text--wrapper">
-        //         <p class="text--title title">${input.titleInput}</p>
-        //         <input type="checkbox" name="checkbox" />
-        //         <label class="text--list" for="checkbox">${input.valueInput}</label>
-        //       </div>
-        //       <div class="btn--close">
-        //         <i class="fas fa-times"></i>
-        //       </div>
-        //     </div>
-        //   </div>
-        // `;
     };
-    Component.prototype.parseValue = function (input) {
+    Component.prototype.parseValue = function (param) {
         var html = "";
+        var title = param.titleInput;
+        var value = param.valueInput;
         switch (this.state.componentType) {
             case "IMAGE":
-                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n          <img src=\"" + this.state.valueInput + "\" alt=\"img\" />\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">Dream Coding</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n          <img src=\"" + value + "\" alt=\"img\" />\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
                 break;
             case "VIDEO":
-                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n          <iframe src=\"" + this.state.valueInput + "\" alt=\"video thumbnail\" />\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">Dream Coding</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                var videoId = "";
+                var regex1 = /(?:https?\/\/)?(?:www\.)?youtu.be\/([a-zA-z0-9-]{11})/;
+                var regex2 = /(?:https?\/\/)?(?:www\.)?youtube.com\/watch\?v=([a-zA-z0-9-]{11})/;
+                if (value.match(regex1)) {
+                    var result = value.match(regex1);
+                    videoId = result[1];
+                }
+                else if (value.match(regex2)) {
+                    var result = value.match(regex2);
+                    videoId = result[1];
+                }
+                else {
+                    throw new Error("not a youtube url");
+                }
+                console.log(videoId);
+                html = "<div class=\"component component--media\">\n        <div class=\"media\">\n        <iframe id=\"ytplayer\" type=\"text/html\"\n        src=\"https://www.youtube.com/embed/" + videoId + "?autoplay=0&origin=http://example.com\"\n        frameborder=\"0\"></iframe>\n        </div>\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
                 break;
             case "NOTE":
-                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + this.state.titleInput + "</p>\n            <p class=\"text--list\">" + this.state.valueInput + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <p class=\"text--list\">" + value + "</p>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
                 break;
             case "TASK":
-                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + this.state.titleInput + "</p>\n            <input type=\"checkbox\" name=\"checkbox\" />\n            <label class=\"text--list\" for=\"checkbox\">" + this.state.valueInput + "</label>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
+                html = "<div class=\"component component--text\">\n        <div class=\"paragraph\">\n          <div class=\"text--wrapper\">\n            <p class=\"text--title title\">" + title + "</p>\n            <input type=\"checkbox\" name=\"checkbox\" />\n            <label class=\"text--list\" for=\"checkbox\">" + value + "</label>\n          </div>\n          <div class=\"btn--close\">\n            <i class=\"fas fa-times\"></i>\n          </div>\n        </div>\n      </div>";
                 break;
             default:
                 throw new Error("unable to parse Value");
